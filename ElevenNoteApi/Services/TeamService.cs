@@ -1,6 +1,6 @@
 ﻿using Data;
 using ElevenNoteApi.Data;
-using ElevenNoteApi.Model;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    class TeamCreate
+    class TeamService
     {
         private readonly Guid _userId;
 
-        public TeamCreate(Guid userId)
+        public TeamService(Guid userId)
         {
             _userId = userId;
         }
 
-        public bool CreateNote(TeamCreate model)
+        public bool CreateNote(TeamCreates model)
         {
             var entity =
                 new Teams()
@@ -26,7 +26,7 @@ namespace Services
                     OwnerID = _userId,
                     TeamName = model.TeamName,
                     TeamMembers = model.TeamMembers,
-                    NumberPeopleTeam = model.NumberPeopleOnTeam,
+                    NumberPeopleTeam = model.NumberPeopleOnTeam
                 };
             using (var ctx = new ApplicationDbContext())
             {
@@ -34,73 +34,75 @@ namespace Services
                 return ctx.SaveChanges() == 1;
             }
         }
-        public IEnumerable<TeamListItem> GetNotes()
+        public IEnumerable<TeamListItem> GetTeam()
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var query =
                     ctx
                         .Teams
-                        .Where(e => e.OwnerId == _userId)
+                        .Where(e => e.OwnerID == _userId)
                         .Select(
                             e =>
                                 new TeamListItem
                                 {
-                                    NoteId = e.NoteId,
-                                    Title = e.Title,
-                                    Content = e.Content,
-                                    CreatedUtc = e.CreatedUtc
+                                    TeamId = e.TeamID,
+                                    TeamName = e.TeamName,
+                                    TeamMembers = e.TeamMembers,
+                                    NumberPeopleOnTeam = e.NumberPeopleTeam
                                 }
                         );
                 return query.ToArray();
             }
         }
 
-        public NoteDetail GetNoteById(int noteId)
+        public TeamDetail GetTeamById(int TeamID)
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var entity =
                     ctx
-                        .Notes
-                        .Single(e => e.NoteId == noteId && e.OwnerId == _userId);
+                        .Teams
+                        .Single(e => e.TeamID == TeamID && e.OwnerID == _userId);
                 return
-                    new NoteDetail
+                    new TeamDetail
                     {
-                        NoteId = entity.NoteId,
-                        Title = entity.Title,
-                        Content = entity.Content,
-                        CreatedUtc = entity.CreatedUtc,
-                        ModifiedUtc = entity.ModifiedUtc
+                        TeamId = entity.TeamID,
+                        TeamName = entity.TeamName,
+                        TeamMembers = entity.TeamMembers,
+                        NumberPeopleOnTeam = entity.NumberPeopleTeam,
                     };
             }
         }
-        public bool UpdateNote(NoteEdit model)
+        public bool UpdateNote(TeamEdit model)
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var entity =
                     ctx
-                        .Notes
-                        .Single(e => e.NoteId == model.NoteId && e.OwnerId == _userId);
-                entity.Title = model.Title;
-                entity.Content = model.Content;
-                entity.ModifiedUtc = DateTimeOffset.UtcNow;
+                        .Teams
+                        .Single(e => e.TeamID == model.TeamId && e.OwnerID == _userId);
+
+                entity.TeamID = model.TeamId;
+                entity.TeamName = model.TeamName;
+                entity.TeamMembers = model.TeamMembers;
+                entity.NumberPeopleTeam = model.NumberPeopleOnTeam;
+
 
                 return ctx.SaveChanges() == 1;
             }
         }
 
-        public bool DeleteNote(int noteId)
+        public bool DeleteNote(int TeamID)
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var entity =
                     ctx
-                        .Notes
-                        .Single(e => e.NoteId == noteId && e.OwnerId == _userId);
+                        .Teams
+                        .Single(e => e.TeamID == TeamID && e.OwnerID == _userId);
 
-                ctx.Notes.Remove(entity);
+                ctx.Teams.Remove(entity);
                 return ctx.SaveChanges() == 1;
             }
         }

@@ -53,7 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TeamCreate.cs" />
+    <Compile Include="ContractService.cs" />
+    <Compile Include="DeveloperService.cs" />
+    <Compile Include="TeamService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +66,10 @@
     <ProjectReference Include="..\Data\ElevenNoteApi.Data.csproj">
       <Project>{897C526A-E379-4CBF-999B-809530C396D4}</Project>
       <Name>ElevenNoteApi.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Models\ElevenNoteApi.Models.csproj">
+      <Project>{68EC7298-5D3F-4E65-ADBB-C8310943F4FC}</Project>
+      <Name>ElevenNoteApi.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

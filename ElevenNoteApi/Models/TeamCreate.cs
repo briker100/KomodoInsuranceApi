@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-     public class TeamCreate
+     public class TeamCreates   
     {
+        [Required]  
+        public int OwnerID { get; set; }
         [Required]
         public int TeamID { get; set; }
         [Required]

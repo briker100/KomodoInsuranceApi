@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-     public class TeamDetail
+     public class ContractDetails
     {
-        public int TeamId { get; set; }
+        public int ContractID { get; set; }
+        public string Name { get; set; }
         public string TeamName { get; set; }
-        public string TeamMembers { get; set; }
-        public int NumberPeopleOnTeam { get; set; }
-
     }
 }

@@ -5,21 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data
+namespace Models
 {
-    public class Contracts
+     public class ContractCreate
     {
-        [Key]
         public int ContractID { get; set; }
         [Required]
-        public string ContractName { get; set; }
+        public string Name { get; set; }
         [Required]
-        public string Team { get; set; }
-        [Required]
-        public string Developer { get; set; }
+        public string TeamName { get; set; }
 
         [Required]
         public Guid OwnerID { get; set; }
-
     }
 }

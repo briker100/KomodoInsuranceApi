@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-     public class TeamDetail
+    public class TeamListItem
     {
         public int TeamId { get; set; }
         public string TeamName { get; set; }
         public string TeamMembers { get; set; }
         public int NumberPeopleOnTeam { get; set; }
-
     }
 }
